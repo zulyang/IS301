@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceResource xmlns:wsdl="http://ei.smu.edu.sg/schemas/PokemonInfo">
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://ei.smu.edu.sg/schemas/PokemonInfo" location="/Pokemon_Information.wsdl"/>
+    <config>
+        <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
+        <name>Pokemon_Information-service</name>
+        <resourceType>service.definition</resourceType>
+        <implType>bw</implType>
+        <groups>
+            <row isDefault="true" groupName="Default"/>
+        </groups>
+        <serviceChange>Sun Mar 19 02:43:20 SGT 2017</serviceChange>
+        <interfaceImpl>
+            <tab>
+                <tabName>Pokemon_Info</tabName>
+                <tabType>bw</tabType>
+                <config>
+                    <wsdlDetail location="/Pokemon_Information.wsdl" portType="Pokemon_Info" ns="http://ei.smu.edu.sg/schemas/PokemonInfo"/>
+                    <detail>
+                        <tab>
+                            <tabName>service.definition.impl.tab.label</tabName>
+                            <tabType>impl</tabType>
+                            <config>
+                                <operations>
+                                    <row opName="PokemonInfo_Read" opImpl="/PokemonInfo_Read.process"/>
+                                    <row opName="PokemonInfo_Update" opImpl="/PokemonInfo_Update.process"/>
+                                </operations>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>service.definition.ep.tab.label</tabName>
+                            <tabType>ep</tabType>
+                            <config>
+                                <epBindings>
+                                    <row epName="Pokemon_InfoEndpoint3" epType="soap">
+                                        <config>
+                                            <epDetail>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.transport.tab.label</tabName>
+                                                    <tabType>transport</tabType>
+                                                    <config>
+                                                        <sharedChannel>/Connections/HTTP Connection.sharedhttp</sharedChannel>
+                                                        <transport>
+                                                            <config>
+                                                                <useBasicAuthentication>false</useBasicAuthentication>
+                                                                <httpURI>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3</httpURI>
+                                                            </config>
+                                                        </transport>
+                                                    </config>
+                                                </tab>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.details.tab.label</tabName>
+                                                    <tabType>details</tabType>
+                                                    <config>
+                                                        <operationStyle>rpc</operationStyle>
+                                                        <soapVersion>SOAP 1.1</soapVersion>
+                                                        <soap>
+                                                            <operation name="PokemonInfo_Read">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Read</soapAction>
+                                                                        <operationStyle>rpc</operationStyle>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="PokemonInfo_Update">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Update</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                        </soap>
+                                                    </config>
+                                                </tab>
+                                            </epDetail>
+                                        </config>
+                                    </row>
+                                </epBindings>
+                            </config>
+                        </tab>
+                    </detail>
+                </config>
+            </tab>
+        </interfaceImpl>
+        <wsdl namespace="http://ei.smu.edu.sg/schemas/PokemonInfo" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
+    </config>
+</serviceResource>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Developer Bundle Edition (Education) 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="battle">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="enemy" type="pokemon" />
+                <xsd:element name="own" type="pokemon" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="pokeID" type="xsd:string" />
+    <xsd:element name="pokemon_name" type="xsd:string" />
+    <xsd:element name="gender" type="xsd:string" />
+    <xsd:element name="type" type="xsd:string" />
+    <xsd:element name="combatpoints" type="xsd:integer" />
+    <xsd:element name="role" type="xsd:string" />
+    <xsd:complexType name="pokemon">
+        <xsd:all>
+            <xsd:element ref="pokeID" />
+            <xsd:element ref="pokemon_name" />
+            <xsd:element ref="gender" />
+            <xsd:element ref="type" />
+            <xsd:element ref="combatpoints" />
+            <xsd:element ref="role" />
+        </xsd:all>
+    </xsd:complexType>
+</xsd:schema>

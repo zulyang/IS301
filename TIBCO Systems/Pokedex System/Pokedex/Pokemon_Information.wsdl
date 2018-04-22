@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:ns2="&quot;http://ei.smu.edu.sg/schemas/PokemonInfo&quot;" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="http://www.tibco.com/ns/no_namespace_schema_location/PokeInformation.xsd" xmlns:tns="http://ei.smu.edu.sg/schemas/PokemonInfo" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ei.smu.edu.sg/schemas/PokemonInfo">
+    <import namespace="http://www.tibco.com/ns/no_namespace_schema_location/PokeInformation.xsd"/>
+    <import namespace="http://ei.smu.edu.sg/schemas/PokemonInfo" location="PokeInformation.xsd"/>
+    <message name="PokemonInfo_Read-Input">
+        <part name="PokemonInfoRead_Request" type="tns:PokemonInfoRead_Request"/>
+    </message>
+    <message name="PokemonInfo_Read-Output">
+        <part name="PokemonInfoRead_Response" type="tns:PokemonInfoRead_Response"/>
+    </message>
+    <message name="PokemonInfo_Update-Input">
+        <part name="PokemonInfoUpdate_Request" type="tns:PokemonInfoUpdate_Request"/>
+    </message>
+    <message name="PokemonInfo_Update-Output">
+        <part name="PokemonInfoUpdate_Response" type="tns:PokemonInfoUpdate_Response"/>
+    </message>
+    <portType name="Pokemon_Info">
+        <operation name="PokemonInfo_Read">
+            <input message="tns:PokemonInfo_Read-Input"/>
+            <output message="tns:PokemonInfo_Read-Output"/>
+        </operation>
+        <operation name="PokemonInfo_Update">
+            <input message="tns:PokemonInfo_Update-Input"/>
+            <output message="tns:PokemonInfo_Update-Output"/>
+        </operation>
+    </portType>
+</definitions>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd = "http://www.w3.org/2001/XMLSchema">
+    
+    <!-- product info update request -->
+    <xsd:complexType name="PokemonInfoUpdate_Request">
+        <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" ref="pokeID"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- product info update response -->
+    <xsd:complexType name="PokemonInfoUpdate_Response">
+        <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" ref="Status"/>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Pokemon_Information" type="PokeInformation"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- product info read request -->
+    <xsd:complexType name="PokemonInfoRead_Request">
+        <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" ref="pokeID"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- product info read response -->
+    <xsd:complexType name="PokemonInfoRead_Response">
+        <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" ref="Status"/>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Pokemon_Information" type="PokeInformation"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    
+    <xsd:complexType name = "PokeInformation">
+        <xsd:sequence>
+            <xsd:element ref = "pokeID"/>
+            <xsd:element ref = "pokemon"/>
+            <xsd:element ref = "gender"/>
+            <xsd:element ref = "type"/>
+            <xsd:element ref = "combatpoints"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name = "pokeID" type = "xsd:string"/>
+    <xsd:element name = "pokemon" type = "xsd:string"/>
+    <xsd:element name = "gender" type = "xsd:string"/>
+    <xsd:element name = "type" type = "xsd:string"/>
+    <xsd:element name = "combatpoints" type = "xsd:integer"/>
+    <xsd:element name="Status">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:minLength value="0"/>
+                <xsd:maxLength value="50"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:element>
+</xsd:schema>

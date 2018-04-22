@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlPfx="http://ei.smu.edu.sg/schemas/PokemonInfo">
+    <wsdl:import namespace="http://ei.smu.edu.sg/schemas/PokemonInfo" location="/Pokemon_Information.wsdl"/>
+    <pd:name>PokemonInfo_Read.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="wsdlPfx:PokemonInfo_Read-Input"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings>
+        <wsdlPfx:PokemonInfo_Read-Output>
+            <PokemonInfoRead_Response>
+                <wsdlPfx:Status>
+                    <xsl:value-of select="if (count($Get-Pokemon-Info/resultSet/Record)>0) then &quot;OK&quot; else &quot;Pokemon not found&quot;"/>
+                </wsdlPfx:Status>
+                <wsdlPfx:Pokemon_Information>
+                    <wsdlPfx:pokeID>
+                        <xsl:value-of select="$Get-Pokemon-Info/resultSet/Record[1]/pokeID"/>
+                    </wsdlPfx:pokeID>
+                    <wsdlPfx:pokemon>
+                        <xsl:value-of select="$Get-Pokemon-Info/resultSet/Record[1 ]/pokemon"/>
+                    </wsdlPfx:pokemon>
+                    <wsdlPfx:gender>
+                        <xsl:value-of select="$Get-Pokemon-Info/resultSet/Record[1]/gender"/>
+                    </wsdlPfx:gender>
+                    <wsdlPfx:type>
+                        <xsl:value-of select="$Get-Pokemon-Info/resultSet/Record[1]/type"/>
+                    </wsdlPfx:type>
+                    <wsdlPfx:combatpoints>
+                        <xsl:value-of select="$Get-Pokemon-Info/resultSet/Record[1]/combatpoints"/>
+                    </wsdlPfx:combatpoints>
+                </wsdlPfx:Pokemon_Information>
+            </PokemonInfoRead_Response>
+        </wsdlPfx:PokemonInfo_Read-Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="wsdlPfx:PokemonInfo_Read-Output"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://ei.smu.edu.sg/schemas/PokemonInfo</pd:targetNamespace>
+    <pd:activity name="Get Pokemon Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>276</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connections/Pokedex.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT p.pokeID, p.pokeNumber, p.gender, p.level, p.combatpoints, p.experience, p.wild, pd.pokemon, pd.type FROM pokemons p INNER JOIN pokemondictionary pd ON p.pokeNumber = pd.pokeNumber WHERE p.pokeID= ? </statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>pokeID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>pokeID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>pokeNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>INT</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>gender</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>level</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>INT</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>combatpoints</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>INT</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>experience</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>INT</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>wild</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>pokemon</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>type</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <pokeID>
+                    <xsl:value-of select="$Start/wsdlPfx:PokemonInfo_Read-Input/PokemonInfoRead_Request/wsdlPfx:pokeID"/>
+                </pokeID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Pokemon Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Pokemon Info</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

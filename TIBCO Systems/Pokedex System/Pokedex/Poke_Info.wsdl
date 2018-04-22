@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:tns="http://ei.smu.edu.sg/schemas/PokemonInfo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="Untitled" targetNamespace="http://ei.smu.edu.sg/schemas/PokemonInfo">
+    <wsdl:types>
+        <xsd:schema xmlns="http://ei.smu.edu.sg/schemas/PokemonInfo" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ei.smu.edu.sg/schemas/PokemonInfo" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xsd:complexType name="PokeInformation">
+                <xsd:sequence>
+                    <xsd:element ref="tns:pokeID"/>
+                    <xsd:element ref="tns:pokemon"/>
+                    <xsd:element ref="tns:gender"/>
+                    <xsd:element ref="tns:type"/>
+                    <xsd:element ref="tns:combatpoints"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PokemonInfoRead_Request">
+                <xsd:sequence>
+                    <xsd:element ref="tns:pokeID"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PokemonInfoRead_Response">
+                <xsd:sequence>
+                    <xsd:element ref="tns:Status"/>
+                    <xsd:element name="Pokemon_Information" type="tns:PokeInformation"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PokemonInfoUpdate_Request">
+                <xsd:sequence>
+                    <xsd:element ref="tns:pokeID"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="PokemonInfoUpdate_Response">
+                <xsd:sequence>
+                    <xsd:element ref="tns:Status"/>
+                    <xsd:element name="Pokemon_Information" type="tns:PokeInformation"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Status">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="50"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="combatpoints" type="xsd:integer"/>
+            <xsd:element name="gender" type="xsd:string"/>
+            <xsd:element name="pokeID" type="xsd:string"/>
+            <xsd:element name="pokemon" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:service name="Pokemon_Information-service">
+        <wsdl:port name="Pokemon_InfoEndpoint3" binding="tns:Pokemon_InfoEndpoint3Binding">
+            <soap:address location="http://localhost:9090/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="Pokemon_Info">
+        <wsdl:operation name="PokemonInfo_Read">
+            <wsdl:input message="tns:PokemonInfo_Read-Input"/>
+            <wsdl:output message="tns:PokemonInfo_Read-Output"/>
+        </wsdl:operation>
+        <wsdl:operation name="PokemonInfo_Update">
+            <wsdl:input message="tns:PokemonInfo_Update-Input"/>
+            <wsdl:output message="tns:PokemonInfo_Update-Output"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="Pokemon_InfoEndpoint3Binding" type="tns:Pokemon_Info">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="PokemonInfo_Read">
+            <soap:operation style="rpc" soapAction="/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Read"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="PokemonInfoRead_Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="PokemonInfoRead_Response"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PokemonInfo_Update">
+            <soap:operation style="rpc" soapAction="/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Update"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="PokemonInfoUpdate_Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="PokemonInfoUpdate_Response"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="PokemonInfo_Read-Input">
+        <wsdl:part name="PokemonInfoRead_Request" type="tns:PokemonInfoRead_Request"/>
+    </wsdl:message>
+    <wsdl:message name="PokemonInfo_Read-Output">
+        <wsdl:part name="PokemonInfoRead_Response" type="tns:PokemonInfoRead_Response"/>
+    </wsdl:message>
+    <wsdl:message name="PokemonInfo_Update-Input">
+        <wsdl:part name="PokemonInfoUpdate_Request" type="tns:PokemonInfoUpdate_Request"/>
+    </wsdl:message>
+    <wsdl:message name="PokemonInfo_Update-Output">
+        <wsdl:part name="PokemonInfoUpdate_Response" type="tns:PokemonInfoUpdate_Response"/>
+    </wsdl:message>
+</wsdl:definitions>

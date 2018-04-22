@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle_Rev.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle_Rev.xsd" schemaLocation="/PokeBattle_Rev.xsd"/>
+    <pd:name>Process Definition.process</pd:name>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>207</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>UTF8</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/HTTP Connection.sharedhttp</sharedChannel>
+            <customField>
+                <row>
+                    <attribute>xmlString</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+            </customField>
+            <parsePostData>true</parsePostData>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>897</pd:endX>
+    <pd:endY>88</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489849060862</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>574</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <fileName>ProcessDefinitionJavaCode</fileName>
+            <packageName>ProcessDefinition</packageName>
+            <fullsource>package ProcessDefinition;
+import java.util.*;
+import java.io.*;
+public class ProcessDefinitionJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String enemy_pokeID = "";
+	protected String enemy_pokemon_name = "";
+	protected String enemy_type = "";
+	protected int enemy_combatpoints = 0;
+	protected String own_pokeID = "";
+	protected String own_pokemon_name = "";
+	protected String own_type = "";
+	protected int own_combatpoints = 0;
+	protected String status = "";
+	public String getenemy_pokeID() {
+		return enemy_pokeID;
+	}
+	public void setenemy_pokeID(String val) {
+		enemy_pokeID = val;
+	}
+	public String getenemy_pokemon_name() {
+		return enemy_pokemon_name;
+	}
+	public void setenemy_pokemon_name(String val) {
+		enemy_pokemon_name = val;
+	}
+	public String getenemy_type() {
+		return enemy_type;
+	}
+	public void setenemy_type(String val) {
+		enemy_type = val;
+	}
+	public int getenemy_combatpoints() {
+		return enemy_combatpoints;
+	}
+	public void setenemy_combatpoints(int val) {
+		enemy_combatpoints = val;
+	}
+	public String getown_pokeID() {
+		return own_pokeID;
+	}
+	public void setown_pokeID(String val) {
+		own_pokeID = val;
+	}
+	public String getown_pokemon_name() {
+		return own_pokemon_name;
+	}
+	public void setown_pokemon_name(String val) {
+		own_pokemon_name = val;
+	}
+	public String getown_type() {
+		return own_type;
+	}
+	public void setown_type(String val) {
+		own_type = val;
+	}
+	public int getown_combatpoints() {
+		return own_combatpoints;
+	}
+	public void setown_combatpoints(int val) {
+		own_combatpoints = val;
+	}
+	public String getstatus() {
+		return status;
+	}
+	public void setstatus(String val) {
+		status = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ProcessDefinitionJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String enemy_pokeID
+	In  : String enemy_pokemon_name
+	In  : String enemy_type
+	In  : int enemy_combatpoints
+	In  : String own_pokeID
+	In  : String own_pokemon_name
+	In  : String own_type
+	In  : int own_combatpoints
+	Out : String status
+* Available Variables: DO NOT MODIFY *****/
+
+if (enemy_type.equals("grass") &amp;&amp; own_type.equals("grass")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("grass") &amp;&amp; own_type.equals("normal")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("grass") &amp;&amp; own_type.equals("fire")){
+	enemy_combatpoints *= enemy_combatpoints * 0.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("grass") &amp;&amp; own_type.equals("water")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("grass") &amp;&amp; own_type.equals("poison")){
+	enemy_combatpoints *= enemy_combatpoints * 1.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("normal") &amp;&amp; own_type.equals("grass")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("normal") &amp;&amp; own_type.equals("normal")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("normal") &amp;&amp; own_type.equals("fire")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("normal") &amp;&amp; own_type.equals("water")){
+	enemy_combatpoints *= enemy_combatpoints * 1.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("normal") &amp;&amp; own_type.equals("poison")){
+	enemy_combatpoints *= enemy_combatpoints * 0.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("fire") &amp;&amp; own_type.equals("grass")){
+	enemy_combatpoints *= enemy_combatpoints * 1.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("fire") &amp;&amp; own_type.equals("normal")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("fire") &amp;&amp; own_type.equals("fire")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("fire") &amp;&amp; own_type.equals("water")){
+	enemy_combatpoints *= enemy_combatpoints * 0.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("fire") &amp;&amp; own_type.equals("poison")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("grass")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("normal")){
+	enemy_combatpoints *= enemy_combatpoints * 0.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("fire")){
+	enemy_combatpoints *= enemy_combatpoints * 1.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("water")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("poison")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("poison") &amp;&amp; own_type.equals("grass")){
+	enemy_combatpoints *= enemy_combatpoints * 0.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("poison") &amp;&amp; own_type.equals("normal")){
+	enemy_combatpoints *= enemy_combatpoints * 1.5;
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("poison") &amp;&amp; own_type.equals("fire")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("poison") &amp;&amp; own_type.equals("water")){
+	
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+
+if (enemy_type.equals("water") &amp;&amp; own_type.equals("poison")){
+	if(enemy_combatpoints &gt; own_combatpoints){
+		status = enemy_pokeID + ", " + enemy_pokemon_name + " won!";
+	}else{
+		status = own_pokeID + ", " + own_pokemon_name + " won!";
+	}
+}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>status</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>enemy_pokeID</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>enemy_pokemon_name</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>enemy_type</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>enemy_combatpoints</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>own_pokeID</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>own_pokemon_name</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>own_type</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>own_combatpoints</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>ProcessDefinitionJavaCode</name>
+                    <byteCode>yv66vgAAADMAaQkAHABJCQAcAEoJABwASwkAHABMCQAcAE0JABwATgkAHABPCQAcAFAJABwAUQoAHQBSCABTCABUCgBVAFYHAFcKAA4AUgoADgBYCABZCABaCgAOAFsIAFwIAF0GP+AAAAAAAAAIAF4IAF8GP/gAAAAAAAAHAGAHAGEBAAxlbmVteV9wb2tlSUQBABJMamF2YS9sYW5nL1N0cmluZzsBABJlbmVteV9wb2tlbW9uX25hbWUBAAplbmVteV90eXBlAQASZW5lbXlfY29tYmF0cG9pbnRzAQABSQEACm93bl9wb2tlSUQBABBvd25fcG9rZW1vbl9uYW1lAQAIb3duX3R5cGUBABBvd25fY29tYmF0cG9pbnRzAQAGc3RhdHVzAQAPZ2V0ZW5lbXlfcG9rZUlEAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAPc2V0ZW5lbXlfcG9rZUlEAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAVZ2V0ZW5lbXlfcG9rZW1vbl9uYW1lAQAVc2V0ZW5lbXlfcG9rZW1vbl9uYW1lAQANZ2V0ZW5lbXlfdHlwZQEADXNldGVuZW15X3R5cGUBABVnZXRlbmVteV9jb21iYXRwb2ludHMBAAMoKUkBABVzZXRlbmVteV9jb21iYXRwb2ludHMBAAQoSSlWAQANZ2V0b3duX3Bva2VJRAEADXNldG93bl9wb2tlSUQBABNnZXRvd25fcG9rZW1vbl9uYW1lAQATc2V0b3duX3Bva2Vtb25fbmFtZQEAC2dldG93bl90eXBlAQALc2V0b3duX3R5cGUBABNnZXRvd25fY29tYmF0cG9pbnRzAQATc2V0b3duX2NvbWJhdHBvaW50cwEACWdldHN0YXR1cwEACXNldHN0YXR1cwEABjxpbml0PgEAAygpVgEABmludm9rZQEADVN0YWNrTWFwVGFibGUBAApFeGNlcHRpb25zBwBiAQAKU291cmNlRmlsZQEAHlByb2Nlc3NEZWZpbml0aW9uSmF2YUNvZGUuamF2YQwAHgAfDAAgAB8MACEAHwwAIgAjDAAkAB8MACUAHwwAJgAfDAAnACMMACgAHwwAQQBCAQAAAQAFZ3Jhc3MHAGMMAGQAZQEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyDABmAGcBAAIsIAEABSB3b24hDABoACoBAAZub3JtYWwBAARmaXJlAQAFd2F0ZXIBAAZwb2lzb24BACtQcm9jZXNzRGVmaW5pdGlvbi9Qcm9jZXNzRGVmaW5pdGlvbkphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABBqYXZhL2xhbmcvU3RyaW5nAQAGZXF1YWxzAQAVKExqYXZhL2xhbmcvT2JqZWN0OylaAQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcAIQAcAB0AAAAJAAQAHgAfAAAABAAgAB8AAAAEACEAHwAAAAQAIgAjAAAABAAkAB8AAAAEACUAHwAAAAQAJgAfAAAABAAnACMAAAAEACgAHwAAABQAAQApACoAAQArAAAAHQABAAEAAAAFKrQAAbAAAAABACwAAAAGAAEAAAAQAAEALQAuAAEAKwAAACIAAgACAAAABiortQABsQAAAAEALAAAAAoAAgAAABMABQAUAAEALwAqAAEAKwAAAB0AAQABAAAABSq0AAKwAAAAAQAsAAAABgABAAAAFgABADAALgABACsAAAAiAAIAAgAAAAYqK7UAArEAAAABACwAAAAKAAIAAAAZAAUAGgABADEAKgABACsAAAAdAAEAAQAAAAUqtAADsAAAAAEALAAAAAYAAQAAABwAAQAyAC4AAQArAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAsAAAACgACAAAAHwAFACAAAQAzADQAAQArAAAAHQABAAEAAAAFKrQABKwAAAABACwAAAAGAAEAAAAiAAEANQA2AAEAKwAAACIAAgACAAAABiobtQAEsQAAAAEALAAAAAoAAgAAACUABQAmAAEANwAqAAEAKwAAAB0AAQABAAAABSq0AAWwAAAAAQAsAAAABgABAAAAKAABADgALgABACsAAAAiAAIAAgAAAAYqK7UABbEAAAABACwAAAAKAAIAAAArAAUALAABADkAKgABACsAAAAdAAEAAQAAAAUqtAAGsAAAAAEALAAAAAYAAQAAAC4AAQA6AC4AAQArAAAAIgACAAIAAAAGKiu1AAaxAAAAAQAsAAAACgACAAAAMQAFADIAAQA7ACoAAQArAAAAHQABAAEAAAAFKrQAB7AAAAABACwAAAAGAAEAAAA0AAEAPAAuAAEAKwAAACIAAgACAAAABiortQAHsQAAAAEALAAAAAoAAgAAADcABQA4AAEAPQA0AAEAKwAAAB0AAQABAAAABSq0AAisAAAAAQAsAAAABgABAAAAOgABAD4ANgABACsAAAAiAAIAAgAAAAYqG7UACLEAAAABACwAAAAKAAIAAAA9AAUAPgABAD8AKgABACsAAAAdAAEAAQAAAAUqtAAJsAAAAAEALAAAAAYAAQAAAEAAAQBAAC4AAQArAAAAIgACAAIAAAAGKiu1AAmxAAAAAQAsAAAACgACAAAAQwAFAEQAAQBBAEIAAQArAAAAeQACAAEAAAA5KrcACioSC7UAASoSC7UAAioSC7UAAyoDtQAEKhILtQAFKhILtQAGKhILtQAHKgO1AAgqEgu1AAmxAAAAAQAsAAAALgALAAAARgAEAAYACgAHABAACAAWAAkAGwAKACEACwAnAAwALQANADIADgA4AEcAAQBDAEIAAgArAAAOJwAHAAEAAAvrKrQAAxIMtgANmQBpKrQABxIMtgANmQBdKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIMtgANmQBpKrQABxIUtgANmQBdKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIMtgANmQB9KrQABxIVtgANmQBxKlm0AASHKrQABIcUABZra461AAQqtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEgy2AA2ZAGkqtAAHEhi2AA2ZAF0qtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEgy2AA2ZAH0qtAAHEhm2AA2ZAHEqWbQABIcqtAAEhxQAGmtrjrUABCq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFLYADZkAaSq0AAcSDLYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFLYADZkAaSq0AAcSFLYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFLYADZkAaSq0AAcSFbYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFLYADZkAfSq0AAcSGLYADZkAcSpZtAAEhyq0AASHFAAaa2uOtQAEKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIUtgANmQB9KrQABxIZtgANmQBxKlm0AASHKrQABIcUABZra461AAQqtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEhW2AA2ZAH0qtAAHEgy2AA2ZAHEqWbQABIcqtAAEhxQAGmtrjrUABCq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFbYADZkAaSq0AAcSFLYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFbYADZkAaSq0AAcSFbYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSFbYADZkAfSq0AAcSGLYADZkAcSpZtAAEhyq0AASHFAAWa2uOtQAEKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIVtgANmQBpKrQABxIZtgANmQBdKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIYtgANmQBpKrQABxIMtgANmQBdKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIYtgANmQB9KrQABxIUtgANmQBxKlm0AASHKrQABIcUABZra461AAQqtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEhi2AA2ZAH0qtAAHEhW2AA2ZAHEqWbQABIcqtAAEhxQAGmtrjrUABCq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSGLYADZkAaSq0AAcSGLYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSGLYADZkAaSq0AAcSGbYADZkAXSq0AAQqtAAIpAAsKrsADlm3AA8qtAABtgAQEhG2ABAqtAACtgAQEhK2ABC2ABO1AAmnACkquwAOWbcADyq0AAW2ABASEbYAECq0AAa2ABASErYAELYAE7UACSq0AAMSGbYADZkAfSq0AAcSDLYADZkAcSpZtAAEhyq0AASHFAAWa2uOtQAEKrQABCq0AAikACwquwAOWbcADyq0AAG2ABASEbYAECq0AAK2ABASErYAELYAE7UACacAKSq7AA5ZtwAPKrQABbYAEBIRtgAQKrQABrYAEBIStgAQtgATtQAJKrQAAxIZtgANmQB9KrQABxIUtgANmQBxKlm0AASHKrQABIcUABpra461AAQqtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEhm2AA2ZAGkqtAAHEhW2AA2ZAF0qtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEhm2AA2ZAGkqtAAHEhi2AA2ZAF0qtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAkqtAADEhi2AA2ZAGkqtAAHEhm2AA2ZAF0qtAAEKrQACKQALCq7AA5ZtwAPKrQAAbYAEBIRtgAQKrQAArYAEBIStgAQtgATtQAJpwApKrsADlm3AA8qtAAFtgAQEhG2ABAqtAAGtgAQEhK2ABC2ABO1AAmxAAAAAgAsAAABvgBvAAAAVQAYAFYAIwBXAEwAWQByAF0AigBeAJUAXwC+AGEA5ABlAPwAZgEQAGcBGwBoAUQAagFqAG4BggBvAY0AcAG2AHIB3AB2AfQAdwIIAHgCEwB5AjwAewJiAH8CegCAAoUAgQKuAIMC1ACHAuwAiAL3AIkDIACLA0YAjwNeAJEDaQCSA5IAlAO4AJgD0ACZA+QAmgPvAJsEGACdBD4AoQRWAKIEagCjBHUApASeAKYExACqBNwAqwTwAKwE+wCtBSQArwVKALMFYgC0BW0AtQWWALcFvAC7BdQAvQXfAL4GCADABi4AxAZGAMUGWgDGBmUAxwaOAMkGtADNBswAzgbXAM8HAADRByYA1Qc+ANcHSQDYB3IA2geYAN4HsADfB8QA4AfPAOEH+ADjCB4A5wg2AOgISgDpCFUA6gh+AOwIpADwCLwA8gjHAPMI8AD1CRYA+QkuAPoJOQD7CWIA/QmIAQEJoAECCbQBAwm/AQQJ6AEGCg4BCgomAQsKOgEMCkUBDQpuAQ8KlAETCqwBFQq3ARYK4AEYCwYBHAseAR4LKQEfC1IBIQt4ASULkAEmC5sBJwvEASkL6gEsAEQAAABmADL7AEwl+wBLJfsAXyX7AEsl+wBfJfsASyX7AEsl+wBLJfsAXyX7AF8l+wBfJfsASyX7AEsl+wBfJfsASyX7AEsl+wBfJfsAXyX7AEsl+wBLJfsAXyX7AF8l+wBLJfsASyX7AEslAEUAAAAEAAEARgABAEcAAAACAEg=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <enemy_pokeID>
+                    <xsl:value-of select="$Parse-XML/battle/enemy/pokeID"/>
+                </enemy_pokeID>
+                <enemy_pokemon_name>
+                    <xsl:value-of select="$Parse-XML/battle/enemy/pokemon_name"/>
+                </enemy_pokemon_name>
+                <enemy_type>
+                    <xsl:value-of select="$Parse-XML/battle/enemy/type"/>
+                </enemy_type>
+                <enemy_combatpoints>
+                    <xsl:value-of select="$Parse-XML/battle/enemy/combatpoints"/>
+                </enemy_combatpoints>
+                <own_pokeID>
+                    <xsl:value-of select="$Parse-XML/battle/own/pokeID"/>
+                </own_pokeID>
+                <own_pokemon_name>
+                    <xsl:value-of select="$Parse-XML/battle/own/pokemon_name"/>
+                </own_pokemon_name>
+                <own_type>
+                    <xsl:value-of select="$Parse-XML/battle/own/type"/>
+                </own_type>
+                <own_combatpoints>
+                    <xsl:value-of select="$Parse-XML/battle/own/combatpoints"/>
+                </own_combatpoints>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>398</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:battle"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/parameters/xmlString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>762</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <flushResponse>true</flushResponse>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$Java-Code/javaCodeActivityOutput/status"/>
+                </asciiContent>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

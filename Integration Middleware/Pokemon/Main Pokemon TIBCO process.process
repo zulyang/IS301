@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/SignalInActivitySchema" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle_Rev.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/PokeInformation (2).xsd" xmlns:pfx="http://ei.smu.edu.sg/schemas/PokemonInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/PokeInformation (2).xsd" schemaLocation="/PokeInformation.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/PokeBattle.xsd" schemaLocation="/PokeBattle.xsd"/>
+    <wsdl:import namespace="http://ei.smu.edu.sg/schemas/PokemonInfo" location="/Poke_Info_WSDL.wsdl"/>
+    <pd:name>Main Pokemon TIBCO process.process</pd:name>
+    <pd:startName>Pokeapp HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Pokeapp HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>382</pd:x>
+        <pd:y>1216</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>ISO8859_1</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/AppHttpConnection.sharedhttp</sharedChannel>
+            <parsePostData>false</parsePostData>
+            <customField>
+                <row>
+                    <attribute>pokeID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>lat</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>long</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>userID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+            </customField>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>965</pd:endX>
+    <pd:endY>123</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489164545840</pd:targetNamespace>
+    <pd:activity name="Render JSON Result">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>413</pd:x>
+        <pd:y>222</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx4:battle"/>
+                            <xsd:element name="Battle-Result" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass>
+                <root>
+                    <battle>
+                        <xsl:for-each select="$SOAP-Request-Reply-Pokedex-Wild-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information">
+                            <enemy>
+                                <pokeID>
+                                    <xsl:value-of select="pfx:pokeID"/>
+                                </pokeID>
+                                <pokemon_name>
+                                    <xsl:value-of select="pfx:pokemon"/>
+                                </pokemon_name>
+                                <gender>
+                                    <xsl:value-of select="pfx:gender"/>
+                                </gender>
+                                <type>
+                                    <xsl:value-of select="pfx:type"/>
+                                </type>
+                                <combatpoints>
+                                    <xsl:value-of select="pfx:combatpoints"/>
+                                </combatpoints>
+                                <role>
+                                    <xsl:value-of select="&quot;enemy&quot;"/>
+                                </role>
+                            </enemy>
+                        </xsl:for-each>
+                        <xsl:for-each select="$SOAP-Request-Reply-Pokedex-Trainer-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information">
+                            <own>
+                                <pokeID>
+                                    <xsl:value-of select="pfx:pokeID"/>
+                                </pokeID>
+                                <pokemon_name>
+                                    <xsl:value-of select="pfx:pokemon"/>
+                                </pokemon_name>
+                                <gender>
+                                    <xsl:value-of select="pfx:gender"/>
+                                </gender>
+                                <type>
+                                    <xsl:value-of select="pfx:type"/>
+                                </type>
+                                <combatpoints>
+                                    <xsl:value-of select="pfx:combatpoints"/>
+                                </combatpoints>
+                                <role>
+                                    <xsl:value-of select="&quot;own&quot;"/>
+                                </role>
+                            </own>
+                        </xsl:for-each>
+                    </battle>
+                    <Battle-Result>
+                        <xsl:value-of select="$Invoke-Battle-System-REST-API/ns1:RESTOutput/msg"/>
+                    </Battle-Result>
+                </root>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invoke Battle System REST API">
+        <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+        <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+        <pd:x>438</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <enableProtocolUI>None</enableProtocolUI>
+            <restMethodUI>POST</restMethodUI>
+            <restResponseType>Default</restResponseType>
+            <authChoiceUI>No Authentication</authChoiceUI>
+            <WADLPaths/>
+            <WADLBaseURL/>
+            <restMethodIDUI/>
+            <restURI>http://localhost:8080/</restURI>
+            <restInputReferNode>
+                <xsd:element name="Parameters">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Query" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="xmlString" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Header" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Body" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Form" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Text" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Binary" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" minOccurs="0">
+                                                        <xsd:complexType>
+                                                            <xsd:choice>
+                                                                <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                <xsd:element name="text" type="xsd:string"/>
+                                                                <xsd:element name="fileName" type="xsd:string"/>
+                                                            </xsd:choice>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restInputReferNode>
+            <restOutputReferNode>
+                <xsd:element name="header">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restOutputReferNode>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <ns1:Parameters>
+                    <Query>
+                        <xmlString>
+                            <xsl:value-of select="$Render-XML/xmlString"/>
+                        </xmlString>
+                    </Query>
+                </ns1:Parameters>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP App Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>628</pd:x>
+        <pd:y>349</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>Pokeapp HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$Render-JSON-Result/ns1:ActivityOutputClass/jsonString"/>
+                </asciiContent>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAP Request Reply Pokedex Trainer Pokemon (Read Operation)">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>572</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx:Pokemon_Information-service</service>
+            <servicePort>Pokemon_InfoEndpoint3</servicePort>
+            <operation>PokemonInfo_Read</operation>
+            <soapAction>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Read</soapAction>
+            <endpointURL>http://localhost:9090/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3</endpointURL>
+            <authScheme>NONE</authScheme>
+        </config>
+        <pd:inputBindings>
+            <PokemonInfo_Read>
+                <PokemonInfoRead_Request>
+                    <pfx:pokeID>
+                        <xsl:value-of select="$JMS-Queue-Requestor-TrainerBox-Read/ns2:ActivityOutput/Body"/>
+                    </pfx:pokeID>
+                </PokemonInfoRead_Request>
+            </PokemonInfo_Read>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAP Request Reply Pokedex Wild Pokemon (Read Operation)">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>386</pd:x>
+        <pd:y>543</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx:Pokemon_Information-service</service>
+            <servicePort>Pokemon_InfoEndpoint3</servicePort>
+            <operation>PokemonInfo_Read</operation>
+            <soapAction>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Read</soapAction>
+            <endpointURL>http://localhost:9090/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3</endpointURL>
+            <authScheme>NONE</authScheme>
+        </config>
+        <pd:inputBindings>
+            <PokemonInfo_Read>
+                <PokemonInfoRead_Request>
+                    <pfx:pokeID>
+                        <xsl:value-of select="$Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/pokeID"/>
+                    </pfx:pokeID>
+                </PokemonInfoRead_Request>
+            </PokemonInfo_Read>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAP Request Reply Pokedex Catch Pokemon (Update Operation)">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>626</pd:x>
+        <pd:y>219</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx:Pokemon_Information-service</service>
+            <servicePort>Pokemon_InfoEndpoint3</servicePort>
+            <operation>PokemonInfo_Update</operation>
+            <soapAction>/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3/PokemonInfo_Update</soapAction>
+            <endpointURL>http://localhost:9090/Pokemon_Information-service3.serviceagent/Pokemon_InfoEndpoint3</endpointURL>
+            <authScheme>NONE</authScheme>
+        </config>
+        <pd:inputBindings>
+            <PokemonInfo_Update>
+                <PokemonInfoUpdate_Request>
+                    <pfx:pokeID>
+                        <xsl:value-of select="$SOAP-Request-Reply-Pokedex-Wild-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information/pfx:pokeID"/>
+                    </pfx:pokeID>
+                </PokemonInfoUpdate_Request>
+            </PokemonInfo_Update>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Topic Publisher (Broadcaster)">
+        <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+        <pd:x>958</pd:x>
+        <pd:y>303</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <destinationTopic>
+                    <xsl:value-of select="$JDBC-Query-Sector/resultSet/Record[1]/topic"/>
+                </destinationTopic>
+                <Body>
+                    <xsl:value-of select="concat(&quot;Attention! &quot;,$SOAP-Request-Reply-Pokedex-Wild-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information/pfx:pokemon,&quot; was found at &quot;,$Invoke-Google-Maps-REST-Address-Translation-API/ns1:RESTOutput/msg)"/>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invoke Google Maps REST Address Translation API">
+        <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+        <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>596</pd:y>
+        <config>
+            <enableProtocolUI>None</enableProtocolUI>
+            <restMethodUI>GET</restMethodUI>
+            <restResponseType>JSON</restResponseType>
+            <authChoiceUI>No Authentication</authChoiceUI>
+            <WADLPaths/>
+            <WADLBaseURL/>
+            <restMethodIDUI/>
+            <restURI>https://maps.googleapis.com/maps/api/geocode/json</restURI>
+            <restInputReferNode>
+                <xsd:element name="Parameters">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Query" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="latlng" type="xsd:string"/>
+                                        <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="result_type" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Header" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Body" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Form" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Text" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Binary" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" minOccurs="0">
+                                                        <xsd:complexType>
+                                                            <xsd:choice>
+                                                                <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                <xsd:element name="text" type="xsd:string"/>
+                                                                <xsd:element name="fileName" type="xsd:string"/>
+                                                            </xsd:choice>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restInputReferNode>
+            <restOutputReferNode>
+                <xsd:element name="header">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restOutputReferNode>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <ns1:Parameters>
+                    <Query>
+                        <latlng>
+                            <xsl:value-of select="concat($Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/lat, &quot;,&quot;, $Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/long)"/>
+                        </latlng>
+                        <key>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/key"/>
+                        </key>
+                        <result_type>
+                            <xsl:value-of select="&quot;postal_code&quot;"/>
+                        </result_type>
+                    </Query>
+                    <Body>
+                        <Text>
+                            <type>
+                                <xsl:value-of select="&quot;application/json&quot;"/>
+                            </type>
+                            <content>
+                                <xsl:value-of select="&quot;{}&quot;"/>
+                            </content>
+                        </Text>
+                    </Body>
+                </ns1:Parameters>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invoke Twitter API">
+        <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+        <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+        <pd:x>632</pd:x>
+        <pd:y>107</pd:y>
+        <config>
+            <enableProtocolUI>None</enableProtocolUI>
+            <restMethodUI>POST</restMethodUI>
+            <restResponseType>JSON</restResponseType>
+            <authChoiceUI>OAuth1.0</authChoiceUI>
+            <WADLPaths/>
+            <WADLBaseURL/>
+            <restMethodIDUI/>
+            <restURI>https://api.twitter.com/1.1/statuses/update.json</restURI>
+            <restInputReferNode>
+                <xsd:element name="Parameters">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Query" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="status" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Header" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Body" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Form" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Text" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Binary" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="content" minOccurs="0">
+                                                        <xsd:complexType>
+                                                            <xsd:choice>
+                                                                <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                <xsd:element name="text" type="xsd:string"/>
+                                                                <xsd:element name="fileName" type="xsd:string"/>
+                                                            </xsd:choice>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restInputReferNode>
+            <restOutputReferNode>
+                <xsd:element name="header">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restOutputReferNode>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <ns1:Parameters>
+                    <Query>
+                        <status>
+                            <xsl:value-of select="concat($SOAP-Request-Reply-Pokedex-Wild-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information/pfx:pokemon, &quot; caught by &quot;, $Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/userID)"/>
+                        </status>
+                    </Query>
+                    <Body>
+                        <Text>
+                            <type>
+                                <xsl:value-of select="&quot;application/json&quot;"/>
+                            </type>
+                            <content>
+                                <xsl:value-of select="&quot;{}&quot;"/>
+                            </content>
+                        </Text>
+                    </Body>
+                </ns1:Parameters>
+                <OAuth1>
+                    <ConsumerKey>
+                        <xsl:value-of select="&quot;JC5Xni31EvRoZw016gXw6KTob&quot;"/>
+                    </ConsumerKey>
+                    <ConsumerSecret>
+                        <xsl:value-of select="&quot;uhyaKwI11rwQIJqjr3lrZbf73ExPy1dMbB5Gea5I6rVM3nmWoF&quot;"/>
+                    </ConsumerSecret>
+                    <AccessToken>
+                        <xsl:value-of select="&quot;845119688187117569-54606jhxctUtyqRZnJeeNtXIxZ0Uga0&quot;"/>
+                    </AccessToken>
+                    <TokenSecret>
+                        <xsl:value-of select="&quot;t9FbXtWYChr0wfki5JU5yiL4FNG9EoQDtZ7MBFLm4gi7M&quot;"/>
+                    </TokenSecret>
+                </OAuth1>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query Sector">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>949</pd:x>
+        <pd:y>458</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Sector Database Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT topic FROM area WHERE areacode = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>areacode</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>topic</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <areacode>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-JSON-1/ns1:ActivityOutputClass/results/address_components[1]/long_name)">
+                            <xsl:value-of select="$Parse-JSON-1/ns1:ActivityOutputClass/results/address_components[1]/long_name"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </areacode>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>180</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <cdataSections/>
+            <term ref="pfx4:battle"/>
+        </config>
+        <pd:inputBindings>
+            <battle>
+                <xsl:for-each select="$SOAP-Request-Reply-Pokedex-Wild-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information">
+                    <enemy>
+                        <pokeID>
+                            <xsl:value-of select="pfx:pokeID"/>
+                        </pokeID>
+                        <pokemon_name>
+                            <xsl:value-of select="pfx:pokemon"/>
+                        </pokemon_name>
+                        <gender>
+                            <xsl:value-of select="pfx:gender"/>
+                        </gender>
+                        <type>
+                            <xsl:value-of select="pfx:type"/>
+                        </type>
+                        <combatpoints>
+                            <xsl:value-of select="pfx:combatpoints"/>
+                        </combatpoints>
+                        <role>
+                            <xsl:value-of select="&quot;enemy&quot;"/>
+                        </role>
+                    </enemy>
+                </xsl:for-each>
+                <xsl:for-each select="$SOAP-Request-Reply-Pokedex-Trainer-Pokemon-Read-Operation/PokemonInfo_ReadResponse/PokemonInfoRead_Response/pfx:Pokemon_Information">
+                    <own>
+                        <pokeID>
+                            <xsl:value-of select="pfx:pokeID"/>
+                        </pokeID>
+                        <gender>
+                            <xsl:value-of select="pfx:gender"/>
+                        </gender>
+                        <type>
+                            <xsl:value-of select="pfx:type"/>
+                        </type>
+                        <combatpoints>
+                            <xsl:value-of select="pfx:combatpoints"/>
+                        </combatpoints>
+                        <pokemon_name>
+                            <xsl:value-of select="pfx:pokemon"/>
+                        </pokemon_name>
+                        <role>
+                            <xsl:value-of select="&quot;own&quot;"/>
+                        </role>
+                    </own>
+                </xsl:for-each>
+            </battle>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Requestor TrainerBox Read">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>189</pd:x>
+        <pd:y>1000</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>q.trainerBoxRead</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/userID"/>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender Update Trainer Box">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>789</pd:x>
+        <pd:y>44</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>q.trainerBoxUpdate</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <xsl:value-of select="concat($Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/userID, &quot;;&quot;, $Pokeapp-HTTP-Receiver/ProcessStarterOutput/parameters/pokeID)"/>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-JSON-1">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>743</pd:x>
+        <pd:y>539</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="results">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="address_components" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="long_name" type="xsd:string"/>
+                                        <xsd:element name="short_name" type="xsd:string"/>
+                                        <xsd:element name="types" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="others" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Invoke-Google-Maps-REST-Address-Translation-API/ns1:RESTOutput/msg"/>
+                </jsonString>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Send HTTP App Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Pokeapp HTTP Receiver</pd:from>
+        <pd:to>SOAP Request Reply Pokedex Wild Pokemon (Read Operation)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Battle System REST API</pd:from>
+        <pd:to>Render JSON Result</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON Result</pd:from>
+        <pd:to>Send HTTP App Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Battle System REST API</pd:from>
+        <pd:to>SOAP Request Reply Pokedex Catch Pokemon (Update Operation)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAP Request Reply Pokedex Catch Pokemon (Update Operation)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Topic Publisher (Broadcaster)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Battle System REST API</pd:from>
+        <pd:to>Invoke Twitter API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Twitter API</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query Sector</pd:from>
+        <pd:to>JMS Topic Publisher (Broadcaster)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAP Request Reply Pokedex Trainer Pokemon (Read Operation)</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAP Request Reply Pokedex Wild Pokemon (Read Operation)</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Invoke Battle System REST API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Pokeapp HTTP Receiver</pd:from>
+        <pd:to>JMS Queue Requestor TrainerBox Read</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor TrainerBox Read</pd:from>
+        <pd:to>SOAP Request Reply Pokedex Trainer Pokemon (Read Operation)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Battle System REST API</pd:from>
+        <pd:to>JMS Queue Sender Update Trainer Box</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender Update Trainer Box</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAP Request Reply Pokedex Wild Pokemon (Read Operation)</pd:from>
+        <pd:to>Invoke Google Maps REST Address Translation API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke Google Maps REST Address Translation API</pd:from>
+        <pd:to>Parse-JSON-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-JSON-1</pd:from>
+        <pd:to>JDBC Query Sector</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
